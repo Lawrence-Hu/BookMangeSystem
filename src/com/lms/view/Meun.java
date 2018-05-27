@@ -11,8 +11,12 @@ import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.event.ActionEvent;
 import javax.swing.JDesktopPane;
+
+import java.awt.AWTEvent;
 import java.awt.BorderLayout;
 import java.awt.Toolkit;
 
@@ -60,7 +64,6 @@ public class Meun {
 		frame.setLocation(450, 200);
 		
 		
-		
 		JLabel lblNewLabel = new JLabel("\u6B22\u8FCE\u4F7F\u7528\u56FE\u4E66\u7BA1\u7406\u7CFB\u7EDF");
 		lblNewLabel.setFont(new Font("Dialog", Font.BOLD, 20));
 		lblNewLabel.setIcon(new ImageIcon(Meun.class.getResource("/icon/title.png")));
@@ -82,6 +85,12 @@ public class Meun {
 		frame.getContentPane().add(jb_BookManager);
 		
 		JButton jb_UserManager = new JButton("\u7528\u6237\u7EF4\u62A4");
+		jb_UserManager.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				UserManage userManage = new UserManage();
+				userManage.setVisible(true);
+			}
+		});
 		
 		jb_UserManager.setIcon(new ImageIcon(Meun.class.getResource("/icon/user-set.png")));
 		jb_UserManager.setHorizontalAlignment(SwingConstants.LEADING);
@@ -138,4 +147,6 @@ public class Meun {
 		
 		
 	}
+
+	
 }

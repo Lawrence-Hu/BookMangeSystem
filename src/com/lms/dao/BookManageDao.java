@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import com.lms.model.Book;
 
 public class BookManageDao {
@@ -49,4 +52,29 @@ public class BookManageDao {
 		ResultSet rs = prmt.executeQuery();
 		return rs;	
 	}
+	
+	public String[] SearchOne(Connection con,Book book) throws Exception {
+		String[] data = new String[7];
+		ResultSet rs = null;
+		String sql = "select br.bno,br.id,br.bdate,i_user.name,book.bname,book.publish,datediff(day,getdate(),br.bdate)-30'fun' "
+					 + "from br,i_user,book where br.bno = ? and book.bno = br.bno and br.id = i_user.id ";
+		PreparedStatement pstmt = con.prepareStatement(sql);
+		pstmt.setInt(1,book.getBno());
+		rs = pstmt.executeQuery();
+		if(rs.next()){
+			data[0] = rs.getString("bno");//书编号
+			data[1] = rs.getString("bname");//书名称
+			data[2] = rs.getString("publish");//出版社
+			data[3] = rs.getString("id");//读者编号
+			data[4] = rs.getString("name");//读者名称
+			data[5] = rs.getString("bdate");//借书时间
+			data[6] = rs.getString("fun");//罚款
+			
+		}
+		return data;
+	}
+	
+//	public Boolean backBook(Connection con,Book book) throws Exception{
+//		String sql = "update book set radate = getdate()";
+//	}
 }

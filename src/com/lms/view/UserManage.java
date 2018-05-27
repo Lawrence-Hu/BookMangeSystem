@@ -30,6 +30,8 @@ import com.lms.util.StringUtil;
 import javax.swing.JScrollPane;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -81,7 +83,7 @@ public class UserManage extends JFrame {
 	public UserManage() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(UserManage.class.getResource("/icon/allfix.png")));
 		setTitle("\u8BFB\u8005\u4FE1\u606F\u4E2D\u5FC3");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1025, 682);
 		setLocation(450, 200);
 		setResizable(false);

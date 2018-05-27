@@ -12,6 +12,11 @@ public class Book {
 		// TODO Auto-generated constructor stub
 	}
 
+	public Book(int bno) {
+		super();
+		this.bno = bno;
+	}
+
 	public Book(int bno, String bname, String publish, String author, float price,String YesorNot) {
 		super();
 		this.bno = bno;
