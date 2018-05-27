@@ -1,4 +1,4 @@
 # BookMangeSystem
-图书管理系统Java版
-java + swing + sqlserver
-只是很简答的程序，学校任务。。。三人协同开发
+图书管理系统Java版。。
+java + swing + sqlserver。。
+三人协同开发。。
