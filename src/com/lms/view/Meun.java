@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
 import java.awt.Font;
@@ -56,6 +57,7 @@ public class Meun {
 		frame.setBounds(100, 100, 1025, 682);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setLocation(450, 200);
 		
 		
 		
@@ -121,8 +123,15 @@ public class Meun {
 		frame.getContentPane().add(jb_Search);
 		
 		JButton jb_Exit = new JButton("\u9000    \u51FA");
+		jb_Exit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int choice = JOptionPane.showConfirmDialog(null, "确定退出？");
+				if(choice == 0){
+					frame.dispose();
+				}
+			}
+		});
 		jb_Exit.setIcon(new ImageIcon(Meun.class.getResource("/icon/exit.png")));
-		jb_Exit.setHorizontalAlignment(SwingConstants.LEADING);
 		jb_Exit.setBackground(Color.WHITE);
 		jb_Exit.setBounds(589, 416, 199, 50);
 		frame.getContentPane().add(jb_Exit);
