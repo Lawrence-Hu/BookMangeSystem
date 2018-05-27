@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 
 public class DbUtil {
 	String driverName="com.microsoft.sqlserver.jdbc.SQLServerDriver"; 
-	String dbURL="jdbc:sqlserver://localhost:1433;DatabaseName=bookManager"; 
+	String dbURL="jdbc:sqlserver://localhost:1433;DatabaseName=Ims.db"; 
 	String userName="sa"; 
 	String userPwd="qwerty"; 
 	/**

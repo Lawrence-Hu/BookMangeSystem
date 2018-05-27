@@ -1,23 +1,61 @@
 package com.lms.model;
 
 public class User {
+	private int id;
+	
 	private String name;
-	private String gender;
+	private String sex;
 	private int age;
-	private String job;
+	private String professional;
 	private int borrowBookNumber;
 	
 	public User() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public User(String name, String gender, int age, String job, int borrowBookNumber) {
+	
+	public User(String name) {
 		super();
 		this.name = name;
-		this.gender = gender;
+	}
+	
+	public User(int id) {
+		super();
+		this.id = id;
+	}
+
+	public User(int id, String name, String sex, int age, String professional) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.sex = sex;
 		this.age = age;
-		this.job = job;
+		this.professional = professional;
+	}
+
+	public User(String name, String sex, int age, String professional, int borrowBookNumber) {
+		super();
+		this.name = name;
+		this.sex = sex;
+		this.age = age;
+		this.professional = professional;
 		this.borrowBookNumber = borrowBookNumber;
+	}
+	
+
+	public User(String name, String sex, int age, String professional) {
+		super();
+		this.name = name;
+		this.sex = sex;
+		this.age = age;
+		this.professional = professional;
+	}
+
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 	public String getName() {
 		return name;
@@ -25,11 +63,11 @@ public class User {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getGender() {
-		return gender;
+	public String getsex() {
+		return sex;
 	}
-	public void setGender(String gender) {
-		this.gender = gender;
+	public void setsex(String sex) {
+		this.sex = sex;
 	}
 	public int getAge() {
 		return age;
@@ -37,11 +75,11 @@ public class User {
 	public void setAge(int age) {
 		this.age = age;
 	}
-	public String getJob() {
-		return job;
+	public String getprofessional() {
+		return professional;
 	}
-	public void setJob(String job) {
-		this.job = job;
+	public void setprofessional(String professional) {
+		this.professional = professional;
 	}
 	public int getBorrowBookNumber() {
 		return borrowBookNumber;
