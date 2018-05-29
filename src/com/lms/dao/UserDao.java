@@ -17,7 +17,7 @@ public class UserDao {
 	 * @throws Exception
 	 */
 	public ResultSet getUsersInfo(Connection con, User user) throws Exception{
-		User resultUser = null;
+		
 		StringBuffer sb = new StringBuffer("select * from i_user");
 		if(StringUtil.isNotEmpty(user.getName())){
 			sb.append(" where name  like '%"+user.getName()+"%'");

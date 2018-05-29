@@ -7,9 +7,20 @@ public class Book {
 	private String author;
 	private float price;
 	private String YesorNot;
+	private int fun;//·£¿î
 	public Book() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+
+	public Book(int bno) {
+		super();
+		this.bno = bno;
+	}
+	public Book(int bno,int fun) {
+		super();
+		this.bno = bno;
+		this.fun = fun;
 	}
 
 	public Book(int bno, String bname, String publish, String author, float price,String YesorNot) {
@@ -29,6 +40,14 @@ public class Book {
 		this.author = author;
 		this.price = price;
 		YesorNot = yesorNot;
+	}
+	
+	public int getFun() {
+		return fun;
+	}
+
+	public void setFun(int fun) {
+		this.fun = fun;
 	}
 
 	public String getYesorNot() {
