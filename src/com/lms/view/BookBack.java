@@ -94,6 +94,10 @@ public class BookBack extends JFrame {
 				try {
 					con = dbUtil.getCon();
 					String[] rs = bookManageDao.SearchOne(con, book); 
+					if(rs[0] ==null){
+						JOptionPane.showMessageDialog(null,"搜索的数据不存在,请重新输入！！");
+						return;
+					}
 					bookIdTxt.setText(rs[0]);
 					bookNameTxt.setText(rs[1]);
 					publishTxt.setText(rs[2]);
@@ -104,6 +108,7 @@ public class BookBack extends JFrame {
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
+					JOptionPane.showMessageDialog(null,"搜索的数据不存在,请重新输入！！");
 				}finally{
 					try {
 						dbUtil.closeCon(con);
@@ -209,15 +214,31 @@ public class BookBack extends JFrame {
 		JButton jb_backBook = new JButton("\u786E\u8BA4\u8FD8\u4E66");
 		jb_backBook.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showConfirmDialog(null,"确定还书？");
-				Book book = new Book(new Integer(bookIdTxt.getText()));
+				int choice = JOptionPane.showConfirmDialog(null,"确定还书？");
+				if(choice !=0){
+					return;
+				}
+				Book book = new Book(new Integer(bookIdTxt.getText()),new Integer(moneyTxt.getText()));
 				Connection con = null;
 				try {
 					con = dbUtil.getCon();
-//					Boolean rs = bookManageDao
+					Boolean rs = bookManageDao.backBook(con, book);
+					if(!rs){
+						JOptionPane.showMessageDialog(null,"还书操作成功！");
+					}else{
+						JOptionPane.showMessageDialog(null,"还书操作失败!");
+					}
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
+					JOptionPane.showMessageDialog(null,"还书操作失败!");
+				}finally{
+					try {
+						dbUtil.closeCon(con);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 				
 			}

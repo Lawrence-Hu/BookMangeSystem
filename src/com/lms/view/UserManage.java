@@ -68,7 +68,7 @@ public class UserManage extends JFrame {
 			public void run() {
 				try {
 					UserManage frame = new UserManage();
-					frame.fillTable(new User());
+					
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -226,12 +226,26 @@ public class UserManage extends JFrame {
 				if(StringUtil.isEmpty(sex)){
 					JOptionPane.showMessageDialog(null, "性别不能为空");
 					return;
+				}else{
+					if(!"男".equals(sex)|| !"女".equals(sex)){
+						JOptionPane.showMessageDialog(null, "请输入正确的性别！！");
+						return;
+					}
 				}
 				if(StringUtil.isEmpty(ageTxt.getText())){
 					JOptionPane.showMessageDialog(null, "年龄不能为空");
 					return;
 				}else{
-					age = new Integer(ageTxt.getText());
+					try{
+						age = new Integer(ageTxt.getText());
+						if(age > 100){
+							JOptionPane.showMessageDialog(null, "请输入正确的年龄！！");
+							return;
+						}
+					}catch(Exception e2){
+						JOptionPane.showMessageDialog(null, "年龄不能为汉字，请输入数字！！");
+						return;
+					}
 				}
 				if(StringUtil.isEmpty(job)){
 					JOptionPane.showMessageDialog(null, "职业不能为空");
@@ -375,7 +389,6 @@ public class UserManage extends JFrame {
 		UserTable.setBorder(new LineBorder(UIManager.getColor("Button.disabledForeground")));
 		UserTable.setModel(new DefaultTableModel(
 			new Object[][] {
-				{null, null, null, null, null, null},
 			},
 			new String[] {
 				"\u7F16\u53F7", "\u59D3\u540D", "\u6027\u522B", "\u5E74\u9F84", "\u804C\u4E1A", "\u5F53\u524D\u501F\u4E66\u91CF"
@@ -391,6 +404,7 @@ public class UserManage extends JFrame {
 		UserTable.getColumnModel().getColumn(5).setPreferredWidth(100);
 		UserTable.setRowHeight(30);
 		UserTable.setFont(new Font("宋体", Font.PLAIN, 20));
+		this.fillTable(new User());
 		
 		
 		

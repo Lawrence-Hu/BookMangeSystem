@@ -56,8 +56,8 @@ public class BookManageDao {
 	public String[] SearchOne(Connection con,Book book) throws Exception {
 		String[] data = new String[7];
 		ResultSet rs = null;
-		String sql = "select br.bno,br.id,br.bdate,i_user.name,book.bname,book.publish,datediff(day,getdate(),br.bdate)-30'fun' "
-					 + "from br,i_user,book where br.bno = ? and book.bno = br.bno and br.id = i_user.id ";
+		String sql = "select br.bno,br.id,br.bdate,i_user.name,book.bname,book.publish,datediff(day,br.bdate,getdate())-30'fun' "
+					 + "from br,i_user,book where br.bno = ? and book.bno = br.bno and br.id = i_user.id and br.rdate is null";
 		PreparedStatement pstmt = con.prepareStatement(sql);
 		pstmt.setInt(1,book.getBno());
 		rs = pstmt.executeQuery();
@@ -74,7 +74,12 @@ public class BookManageDao {
 		return data;
 	}
 	
-//	public Boolean backBook(Connection con,Book book) throws Exception{
-//		String sql = "update book set radate = getdate()";
-//	}
+	public Boolean backBook(Connection con,Book book) throws Exception{
+		String sql = "update br set rdate = getdate(), fun = ? where bno = ?";
+		PreparedStatement pstmt = con.prepareStatement(sql);
+		pstmt.setInt(1,book.getFun());
+		pstmt.setInt(2,book.getBno());
+		return pstmt.execute();
+		
+	}
 }
