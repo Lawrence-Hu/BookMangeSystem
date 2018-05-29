@@ -7,6 +7,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.Color;
 import javax.swing.JTextField;
@@ -15,18 +17,44 @@ import javax.swing.JTable;
 import javax.swing.border.LineBorder;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
+
+import com.lms.Dbutil.Dbutil;
+import com.lms.dao.BookManageDao;
+import com.lms.dao.BorrowDao;
+import com.lms.model.Book;
+import com.lms.model.User;
+import com.lms.util.JDateChooser;
+import com.lms.util.StringUtil;
+import com.lms.util.isDate;
+
 import javax.swing.ImageIcon;
 import java.awt.Toolkit;
+import javax.swing.JScrollPane;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Vector;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class BookBorrow extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField BookNumTxt;
+	private JTextField Search_bno_Txt;
+	private JTextField User_no_Txt;
+	private JTextField bTime_Txt;
+	private JTextField B_no_Txt;
 	private JTable table;
-	private JTextField UserNum;
-	private JTextField Time;
-	private JTextField BookNum;
-
+	Dbutil dbutil = new Dbutil();
+	BookManageDao bmd = new BookManageDao();
+	BorrowDao bb = new BorrowDao();
+	SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 	/**
 	 * Launch the application.
 	 */
@@ -54,105 +82,206 @@ public class BookBorrow extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1025, 682);
 		contentPane = new JPanel();
+		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JPanel panel = new JPanel();
-		panel.setBackground(Color.WHITE);
-		panel.setLayout(null);
-		panel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		panel.setBounds(0, 0, 1003, 630);
-		contentPane.add(panel);
-		
 		JLabel label = new JLabel("\u4E66\u53F7");
-		label.setIcon(new ImageIcon(BookBorrow.class.getResource("/icon/book.png")));
 		label.setForeground(new Color(0, 191, 255));
 		label.setFont(new Font("宋体", Font.PLAIN, 20));
-		label.setBounds(126, 64, 132, 43);
-		panel.add(label);
+		label.setBounds(143, 85, 132, 43);
+		contentPane.add(label);
 		
-		BookNumTxt = new JTextField();
-		BookNumTxt.setColumns(10);
-		BookNumTxt.setBounds(263, 65, 441, 42);
-		panel.add(BookNumTxt);
+		Search_bno_Txt = new JTextField();
+		Search_bno_Txt.setColumns(10);
+		Search_bno_Txt.setBounds(280, 86, 441, 42);
+		contentPane.add(Search_bno_Txt);
 		
-		JButton button = new JButton("\u641C\u7D22");
-		button.setBackground(Color.WHITE);
-		button.setIcon(new ImageIcon(BookBorrow.class.getResource("/icon/search (2).png")));
-		button.setForeground(new Color(0, 191, 255));
-		button.setFont(new Font("宋体", Font.PLAIN, 20));
-		button.setBounds(751, 64, 123, 43);
-		panel.add(button);
-		
-		table = new JTable();
-		table.setModel(new DefaultTableModel(
-				new Object[][] {
-					{"\u7F16\u53F7", "\u4E66\u540D", "\u51FA\u7248\u793E", "\u4F5C\u8005", "\u4EF7\u683C", "\u662F\u5426\u501F\u51FA"},
-				},
-			new String[] {
-				"New column", "New column", "New column", "New column", "New column", "New column"
+		JButton jb_search = new JButton("\u641C\u7D22");
+		jb_search.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String bnoString = new String(Search_bno_Txt.getText());
+				if(StringUtil.isEmpty(bnoString)) {
+					JOptionPane.showMessageDialog(null, "请输入书号！");
+					return;
+				}
+				else {
+					int num=Integer.valueOf(bnoString);
+					Book book = new Book();
+					book.setBno(num);
+					Connection conn =null;
+					try {
+						conn = dbutil.getcon();
+						if(!bmd.islive(conn, book.getBno())) {
+							JOptionPane.showMessageDialog(null, "无该图书");
+							}
+						else {
+							Filltable(book);
+						}
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
 			}
-		));
-		table.setRowHeight(30);
-		table.setFont(new Font("宋体", Font.PLAIN, 20));
-		table.setBorder(new LineBorder(UIManager.getColor("Button.disabledForeground")));
-		table.setBounds(15, 139, 973, 164);
-		panel.add(table);
+		});
+		jb_search.setForeground(new Color(0, 191, 255));
+		jb_search.setFont(new Font("宋体", Font.PLAIN, 20));
+		jb_search.setBackground(Color.WHITE);
+		jb_search.setBounds(768, 85, 123, 43);
+		contentPane.add(jb_search);
 		
 		JLabel label_1 = new JLabel("\u8BFB\u8005\u7F16\u53F7");
-		label_1.setIcon(new ImageIcon(BookBorrow.class.getResource("/icon/num.png")));
 		label_1.setForeground(new Color(0, 191, 255));
 		label_1.setFont(new Font("宋体", Font.PLAIN, 20));
-		label_1.setBounds(285, 335, 123, 43);
-		panel.add(label_1);
+		label_1.setBounds(302, 356, 123, 43);
+		contentPane.add(label_1);
 		
 		JLabel label_2 = new JLabel("\u501F\u9605\u65F6\u95F4");
-		label_2.setIcon(new ImageIcon(BookBorrow.class.getResource("/icon/time.png")));
 		label_2.setForeground(new Color(0, 191, 255));
 		label_2.setFont(new Font("宋体", Font.PLAIN, 20));
-		label_2.setBounds(620, 335, 132, 43);
-		panel.add(label_2);
+		label_2.setBounds(599, 356, 132, 43);
+		contentPane.add(label_2);
 		
-		UserNum = new JTextField();
-		UserNum.setColumns(10);
-		UserNum.setBounds(423, 339, 172, 35);
-		panel.add(UserNum);
+		User_no_Txt = new JTextField();
+		User_no_Txt.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				int keyChar=arg0.getKeyChar();
+				if (keyChar>=KeyEvent.VK_0 && keyChar<=KeyEvent.VK_9) {
+					
+				} else {
+					arg0.consume();  
+				}
+			}
+		});
+		User_no_Txt.setColumns(10);
+		User_no_Txt.setBounds(403, 360, 172, 35);
+		contentPane.add(User_no_Txt);
 		
-		Time = new JTextField();
-		Time.setColumns(10);
-		Time.setBounds(767, 339, 172, 35);
-		panel.add(Time);
+		bTime_Txt = new JTextField();
+		bTime_Txt.setColumns(10);
+		bTime_Txt.setBounds(718, 360, 172, 35);
+		contentPane.add(bTime_Txt);
 		
 		JButton jb_Comfirm = new JButton("\u786E\u5B9A");
-		jb_Comfirm.setBackground(Color.WHITE);
-		jb_Comfirm.setIcon(new ImageIcon(BookBorrow.class.getResource("/icon/confirm (2).png")));
+		jb_Comfirm.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Connection connection = null;
+				try {
+					connection = dbutil.getcon();
+					Integer id = new Integer(User_no_Txt.getText());
+					Integer bno = new Integer(B_no_Txt.getText());
+					String bdate = bTime_Txt.getText();
+					Date date = df.parse(bdate);
+					Book book =new Book();
+					book.setBno(bno);
+					if(bb.isExisUser(connection, id)){
+						if(!bb.isOut(connection, bno)) {
+							if(!bb.OverLimit(connection, id)) {
+								bb.Borrow(connection, bno, id, bdate);
+								bb.Update(connection, bno);
+								JOptionPane.showMessageDialog(null, "借书成功！");
+								Filltable(book);
+								}
+							else {
+								JOptionPane.showMessageDialog(null, "您已借了5本未还，不能借书");
+								}
+							}
+						else {
+								JOptionPane.showMessageDialog(null, "该书已借出,借书失败！");
+							}
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "无该用户 借书失败！");
+					}
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(null, "借书失败请检查输入信息是否为空或有错！");
+					e1.printStackTrace();
+				}
+			}
+		});
 		jb_Comfirm.setForeground(new Color(0, 191, 255));
 		jb_Comfirm.setFont(new Font("宋体", Font.PLAIN, 20));
-		jb_Comfirm.setBounds(279, 516, 139, 43);
-		panel.add(jb_Comfirm);
+		jb_Comfirm.setBackground(Color.WHITE);
+		jb_Comfirm.setBounds(296, 537, 139, 43);
+		contentPane.add(jb_Comfirm);
 		
-		JLabel label_6 = new JLabel("\u4E66\u53F7");
-		label_6.setIcon(new ImageIcon(BookBorrow.class.getResource("/icon/name.png")));
-		label_6.setForeground(new Color(0, 191, 255));
-		label_6.setFont(new Font("宋体", Font.PLAIN, 20));
-		label_6.setBounds(25, 337, 90, 43);
-		panel.add(label_6);
+		JLabel label_3 = new JLabel("\u4E66\u53F7");
+		label_3.setForeground(new Color(0, 191, 255));
+		label_3.setFont(new Font("宋体", Font.PLAIN, 20));
+		label_3.setBounds(42, 358, 90, 43);
+		contentPane.add(label_3);
 		
-		BookNum = new JTextField();
-		BookNum.setBackground(Color.WHITE);
-		BookNum.setEditable(false);
-		BookNum.setColumns(10);
-		BookNum.setBounds(106, 339, 172, 35);
-		panel.add(BookNum);
+		B_no_Txt = new JTextField();
+		B_no_Txt.setEditable(false);
+		B_no_Txt.setColumns(10);
+		B_no_Txt.setBackground(Color.WHITE);
+		B_no_Txt.setBounds(123, 360, 172, 35);
+		contentPane.add(B_no_Txt);
 		
 		JButton jb_Cancel = new JButton("\u53D6\u6D88");
-		jb_Cancel.setBackground(Color.WHITE);
-		jb_Cancel.setIcon(new ImageIcon(BookBorrow.class.getResource("/icon/cancel.png")));
 		jb_Cancel.setForeground(new Color(0, 191, 255));
 		jb_Cancel.setFont(new Font("宋体", Font.PLAIN, 20));
-		jb_Cancel.setBounds(582, 516, 139, 43);
-		panel.add(jb_Cancel);
+		jb_Cancel.setBackground(Color.WHITE);
+		jb_Cancel.setBounds(599, 537, 139, 43);
+		contentPane.add(jb_Cancel);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(15, 149, 973, 192);
+		contentPane.add(scrollPane);
+		
+		table = new JTable();
+		table.setBorder(new LineBorder(new Color(0, 0, 0)));
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				int r= table.getSelectedRow();
+				bTime_Txt.setText(df.format(new Date()));
+				B_no_Txt.setText(table.getValueAt(r, 0).toString());
+		}
+		});
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"\u4E66\u53F7", "\u4E66\u540D", "\u51FA\u7248\u793E", "\u4F5C\u8005", "\u4EF7\u683C", "\u662F\u5426\u501F\u51FA"
+			}
+		));
+		table.setRowHeight(25);
+		table.setBackground(Color.WHITE);
+		scrollPane.setViewportView(table);
 	}
+	public void Filltable(Book book) {
+		DefaultTableModel dtm = (DefaultTableModel) table.getModel();
+		dtm.setRowCount(0);
+		Connection connection =null;
+		try {
+			connection = dbutil.getcon();
+			ResultSet rs = bmd.Search(connection, book);
+			while (rs.next()) {
+				Vector v = new Vector();
+				v.add(rs.getInt("bno"));
+				v.add(rs.getString("bname"));
+				v.add(rs.getString("publish"));
+				v.add(rs.getString("author"));
+				v.add(rs.getFloat("price"));
+				v.add(rs.getString("ishere"));
+				dtm.addRow(v);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 
+			e.printStackTrace();
+		}finally {
+		try {
+			connection.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		}	
+	}
 }

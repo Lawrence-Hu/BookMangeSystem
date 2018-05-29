@@ -57,7 +57,7 @@ public class UserDao {
 		pstmt.setString(1, user.getName());
 		pstmt.setString(2, user.getsex());
 		pstmt.setInt(3, user.getAge());
-		pstmt.setString(4, user.getprofessional());
+		pstmt.setString(4, user.getProfessional());
 		pstmt.setInt(5,user.getId());
 		return pstmt.execute();
 	}
@@ -75,7 +75,7 @@ public class UserDao {
 		pstmt.setString(1, user.getName());
 		pstmt.setString(2, user.getsex());
 		pstmt.setInt(3, user.getAge());
-		pstmt.setString(4, user.getprofessional());
+		pstmt.setString(4, user.getProfessional());
 		return pstmt.execute();
 	}
 }

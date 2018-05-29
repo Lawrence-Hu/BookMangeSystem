@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.Font;
@@ -16,6 +17,8 @@ import javax.swing.table.DefaultTableModel;
 import com.lms.Dbutil.Dbutil;
 import com.lms.dao.BookManageDao;
 import com.lms.model.Book;
+import com.lms.util.StringUtil;
+
 import javax.swing.ImageIcon;
 import java.awt.Color;
 import java.awt.Toolkit;
@@ -49,7 +52,7 @@ public class BookManage extends JFrame {
 	private JButton jb_del;
 	private JTextField YorNTxt;
 	private JLabel label_5;
-	private JTextField bno;
+	private JTextField Bno;
 	private JButton jb_reset;
 	private JScrollPane scrollPane;
 	private JTable bookTable;
@@ -78,7 +81,7 @@ public class BookManage extends JFrame {
 		setBackground(Color.WHITE);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(BookManage.class.getResource("/icon/allfix.png")));
 		setTitle("\u56FE\u4E66\u7EF4\u62A4");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1025, 682);
 		contentPane = new JPanel();		
 		contentPane.setBackground(Color.WHITE);
@@ -110,17 +113,13 @@ public class BookManage extends JFrame {
 		SearchTxt.setColumns(10);
 		
 		JButton jb_Search = new JButton("\u641C\u7D22");
+		jb_Search.setBackground(Color.WHITE);
 		jb_Search.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(SearchTxt.getText().equals(null)||SearchTxt.getText().equals("")) {
-					DefaultTableModel model=(DefaultTableModel)bookTable.getModel();
-					model.setRowCount(0);
-					String bnoString = new String(SearchTxt.getText());
 					Filltable();
 				}
 				else {
-				DefaultTableModel model=(DefaultTableModel)bookTable.getModel();
-				model.setRowCount(0);
 				String bnoString = new String(SearchTxt.getText());
 				int num=Integer.valueOf(bnoString);
 				Book book = new Book();
@@ -186,27 +185,54 @@ public class BookManage extends JFrame {
 		contentPane.add(AuthorNameTxt);
 		
 		PriceTxt = new JTextField();
+		
 		PriceTxt.setBounds(428, 437, 172, 35);
 		PriceTxt.setColumns(10);
 		contentPane.add(PriceTxt);
 		
 		jb_add = new JButton("\u589E\u52A0");
+		jb_add.setBackground(Color.WHITE);
 		jb_add.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) {	
+				String bname = new String(bnameTxt.getText());	
+				if(StringUtil.isEmpty(bname)) {
+					JOptionPane.showMessageDialog(null, "请输入书名！");
+					return;
+				}
+				Float price;
+				if(!isNumber(PriceTxt.getText()) ||StringUtil.isEmpty(PriceTxt.getText())) {
+					JOptionPane.showMessageDialog(null, "请输入正确的数字！");
+					return;
+				}else {
+					price = new Float(PriceTxt.getText());
+				}
 				
-				String bname = new String(bnameTxt.getText());
-				String priceTxt = new String(PriceTxt.getText());
-				Float price=Float.valueOf(priceTxt);
 				String author =  new String(AuthorNameTxt.getText());
+				if(StringUtil.isEmpty(author)) {
+					JOptionPane.showMessageDialog(null, "请输入作者名！");
+					return;
+				}
 				String publish =  new String(PublishNameTxt.getText());
+				if(StringUtil.isEmpty(publish)) {
+					JOptionPane.showMessageDialog(null, "请输入出版社！");
+					return;
+				}
 				String yesornot = new String(YorNTxt.getText());
+				if(!(yesornot.equals("是")||yesornot.equals("否"))) {
+					JOptionPane.showMessageDialog(null, "请输入是/否!");
+					return;
+				}
 				Book book = new Book(bname, publish, author, price, yesornot);
 				Connection connection = null;
 				try {
 					connection = dbutil.getcon();
 					bmd.Add(connection, book);
+					JOptionPane.showMessageDialog(null, "增加图书成功！");
+					Filltable();
+
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(null, "增加图书失败！");	
 					e1.printStackTrace();
 				}finally{
 					try {
@@ -225,25 +251,54 @@ public class BookManage extends JFrame {
 		contentPane.add(jb_add);
 		
 		jb_fix = new JButton("\u4FEE\u6539");
+		jb_fix.setBackground(Color.WHITE);
 		jb_fix.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				String string = new String(bno.getText());
-				int bno=Integer.valueOf(string);
+				Integer bno = new Integer(Bno.getText());	
 				String bname = new String(bnameTxt.getText());
-				String priceTxt = new String(PriceTxt.getText());
-				Float price=Float.valueOf(priceTxt);
+				if(StringUtil.isEmpty(bname)) {
+					JOptionPane.showMessageDialog(null, "请输入书名！");
+					return;
+				}
+				
+				Float price;
+				if(!isNumber(PriceTxt.getText()) ||StringUtil.isEmpty(PriceTxt.getText())) {
+					JOptionPane.showMessageDialog(null, "请输入正确的数字！");
+					return;
+				}else {
+					price = new Float(PriceTxt.getText());
+				}
+				
 				String author =  new String(AuthorNameTxt.getText());
+				if(StringUtil.isEmpty(author)) {
+					JOptionPane.showMessageDialog(null, "请输入作者名！");
+					return;
+				}
+				
 				String publish =  new String(PublishNameTxt.getText());
+				if(StringUtil.isEmpty(publish)) {
+					JOptionPane.showMessageDialog(null, "请输入出版社！");
+					return;
+				}
+				
 				String yesornot = new String(YorNTxt.getText());
-				Book book = new Book(bno, bname, publish, author, price, yesornot);
+				if(!(yesornot.equals("是")||yesornot.equals("否"))) {
+					JOptionPane.showMessageDialog(null, "请输入是/否!");
+					return;
+				}
+				
+				Book book = new Book(bno,bname, publish, author, price, yesornot);
 				Connection connection = null;
+				
 				try {
 					connection = dbutil.getcon();
-					bmd.Delete(connection,bno);
-					bmd.Add(connection, book);
+					bmd.Update(connection, book);
+					JOptionPane.showMessageDialog(null, "修改图书成功！");
+					Filltable();
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(null, "修改图书失败！");
 					e1.printStackTrace();
 				}
 			}
@@ -255,18 +310,33 @@ public class BookManage extends JFrame {
 		contentPane.add(jb_fix);
 		
 		jb_del = new JButton("\u5220\u9664");
+		jb_del.setBackground(Color.WHITE);
 		jb_del.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Integer bno = new Integer(Bno.getText());
 				Connection connection = null;
-				String string = new String(bno.getText());
-				int bno=Integer.valueOf(string);
 				try {
 					connection = dbutil.getcon();
+					if(bmd.isNotBack(connection, bno)) {
+						JOptionPane.showMessageDialog(null, "该书还未换不能删除！");
+						return;
+					}
+					else {
 					bmd.Delete(connection,bno);
+					JOptionPane.showMessageDialog(null, "删除成功！");
+					Filltable();
+					}
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
-				}	
+				}finally {	
+					try {
+						dbutil.closecon(connection);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
 			}
 		});
 		jb_del.setBounds(516, 530, 123, 43);
@@ -287,13 +357,15 @@ public class BookManage extends JFrame {
 		label_5.setFont(new Font("ËÎÌå", Font.PLAIN, 20));
 		contentPane.add(label_5);
 		
-		bno = new JTextField();
-		bno.setEditable(false);
-		bno.setBounds(126, 345, 172, 35);
-		bno.setColumns(10);
-		contentPane.add(bno);
+		Bno = new JTextField();
+		Bno.setBackground(Color.WHITE);
+		Bno.setEditable(false);
+		Bno.setBounds(126, 345, 172, 35);
+		Bno.setColumns(10);
+		contentPane.add(Bno);
 		
 		jb_reset = new JButton("\u91CD\u7F6E");
+		jb_reset.setBackground(Color.WHITE);
 		jb_reset.setBounds(721, 530, 123, 43);
 		jb_reset.setForeground(new Color(0, 191, 255));
 		jb_reset.setIcon(new ImageIcon(BookManage.class.getResource("/icon/Reset.png")));
@@ -309,7 +381,7 @@ public class BookManage extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				int r= bookTable.getSelectedRow();
-				bno.setText(bookTable.getValueAt(r, 0).toString()); 
+				Bno.setText(bookTable.getValueAt(r, 0).toString());
 				bnameTxt.setText(bookTable.getValueAt(r, 1).toString());
 				PublishNameTxt.setText(bookTable.getValueAt(r, 2).toString());
 				AuthorNameTxt.setText(bookTable.getValueAt(r, 3).toString());
@@ -331,6 +403,7 @@ public class BookManage extends JFrame {
 	}
 	public void Filltable(Book book) {
 		DefaultTableModel dtm = (DefaultTableModel) bookTable.getModel();
+		dtm.setRowCount(0);
 		Connection connection =null;
 		try {
 			connection = dbutil.getcon();
@@ -359,6 +432,7 @@ public class BookManage extends JFrame {
 	}
 	public void Filltable() {
 		DefaultTableModel dtm = (DefaultTableModel) bookTable.getModel();
+		dtm.setRowCount(0);
 		Connection connection =null;
 		try {
 			connection = dbutil.getcon();
@@ -385,5 +459,15 @@ public class BookManage extends JFrame {
 		}
 		}	
 	}
+	
+	/**
+	 * 判断字符串是否为数字
+	 * @param str
+	 * @return
+	 */
+	public  boolean isNumber(String str){  
+        String reg = "^[0-9]+(.[0-9]+)?$";  
+        return str.matches(reg);  
+    }
 	
 }

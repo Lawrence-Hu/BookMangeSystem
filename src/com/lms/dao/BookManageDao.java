@@ -25,21 +25,21 @@ public class BookManageDao {
 		prmt.setString(5, book.getYesorNot());
 		return prmt.executeUpdate();
 	}
-	public int Fix(Connection conn, Book book)throws SQLException{
-		
-		String sql = "insert into book (bname,publish,author,price,ishere) values (?,?,?,?,?)";
+	public int Delete(Connection conn, int bno)throws SQLException{
+		String sql = "delete from book where bno = ?";
+		PreparedStatement prmt = conn.prepareStatement(sql);
+		prmt.setInt(1, bno);
+		return prmt.executeUpdate();
+	}
+	public int Update(Connection conn, Book book) throws SQLException {
+		String sql = "update book set bname  = ?, publish = ?, author = ?, price = ?,ishere=? where bno = ?";
 		PreparedStatement prmt = conn.prepareStatement(sql);
 		prmt.setString(1, book.getBname());
 		prmt.setString(2,book.getPublish());
 		prmt.setString(3, book.getAuthor());
 		prmt.setFloat(4, book.getPrice());
 		prmt.setString(5, book.getYesorNot());
-		return prmt.executeUpdate();
-	}
-	public int Delete(Connection conn, int bno)throws SQLException{
-		String sql = "delete from book where bno = ?";
-		PreparedStatement prmt = conn.prepareStatement(sql);
-		prmt.setInt(1, bno);
+		prmt.setInt(6, book.getBno());
 		return prmt.executeUpdate();
 	}
 	
@@ -48,5 +48,29 @@ public class BookManageDao {
 		PreparedStatement prmt = conn.prepareStatement(sql);	
 		ResultSet rs = prmt.executeQuery();
 		return rs;	
+	}
+	public boolean isNotBack(Connection conn, int bno) throws SQLException {
+		boolean result =false;
+		String flag;
+		String sql = "select*  from book where bno="+bno;
+		PreparedStatement prmt = conn.prepareStatement(sql);
+		ResultSet rs = prmt.executeQuery();
+		while(rs.next()){
+			flag = rs.getString("ishere");
+			if(flag.equals("ÊÇ"))
+			result=true;
+		}
+		return result;
+	}
+	public boolean islive(Connection conn, int bno) throws SQLException {
+		boolean result =false;
+		String flag;
+		String sql = "select*  from book where bno="+bno;
+		PreparedStatement prmt = conn.prepareStatement(sql);
+		ResultSet rs = prmt.executeQuery();
+		while(rs.next()){
+			result=true;
+		}
+		return result;
 	}
 }

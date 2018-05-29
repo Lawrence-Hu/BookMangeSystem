@@ -1,5 +1,7 @@
 package com.lms.util;
 
+import com.lms.model.Book;
+
 public class StringUtil {
 	
 	public static boolean isNotEmpty(String str){
