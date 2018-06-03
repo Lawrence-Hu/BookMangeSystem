@@ -59,7 +59,7 @@ public class BookBack extends JFrame {
 	public BookBack() {
 		setTitle("\u8FD8\u4E66\u7BA1\u7406\u4E2D\u5FC3");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(BookBack.class.getResource("/icon/back.png")));
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1025, 682);
 		setLocation(450, 200);
 		setResizable(false);

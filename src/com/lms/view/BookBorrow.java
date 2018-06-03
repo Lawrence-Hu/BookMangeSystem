@@ -81,24 +81,39 @@ public class BookBorrow extends JFrame {
 		setTitle("\u501F\u4E66");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1025, 682);
+		setLocation(450, 200);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		setLocationRelativeTo(null);
 		
 		JLabel label = new JLabel("\u4E66\u53F7");
+		label.setIcon(new ImageIcon(BookBorrow.class.getResource("/icon/book.png")));
 		label.setForeground(new Color(0, 191, 255));
 		label.setFont(new Font("宋体", Font.PLAIN, 20));
 		label.setBounds(143, 85, 132, 43);
 		contentPane.add(label);
 		
 		Search_bno_Txt = new JTextField();
+		Search_bno_Txt.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				int keyChar=arg0.getKeyChar();
+				if (keyChar>=KeyEvent.VK_0 && keyChar<=KeyEvent.VK_9) {
+					
+				} else {
+					arg0.consume();  
+				}
+			}
+		});
 		Search_bno_Txt.setColumns(10);
 		Search_bno_Txt.setBounds(280, 86, 441, 42);
 		contentPane.add(Search_bno_Txt);
 		
 		JButton jb_search = new JButton("\u641C\u7D22");
+		jb_search.setIcon(new ImageIcon(BookBorrow.class.getResource("/icon/search (2).png")));
 		jb_search.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String bnoString = new String(Search_bno_Txt.getText());
@@ -115,6 +130,7 @@ public class BookBorrow extends JFrame {
 						conn = dbutil.getcon();
 						if(!bmd.islive(conn, book.getBno())) {
 							JOptionPane.showMessageDialog(null, "无该图书");
+							return;
 							}
 						else {
 							Filltable(book);
@@ -122,10 +138,19 @@ public class BookBorrow extends JFrame {
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
+					}finally {
+						try {
+							conn.close();
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 					}
 				}
 			}
 		});
+		jb_search.setFocusPainted(false);
+		jb_search.setBorderPainted(false);
 		jb_search.setForeground(new Color(0, 191, 255));
 		jb_search.setFont(new Font("宋体", Font.PLAIN, 20));
 		jb_search.setBackground(Color.WHITE);
@@ -166,6 +191,7 @@ public class BookBorrow extends JFrame {
 		contentPane.add(bTime_Txt);
 		
 		JButton jb_Comfirm = new JButton("\u786E\u5B9A");
+		jb_Comfirm.setIcon(new ImageIcon(BookBorrow.class.getResource("/icon/trues-active.png")));
 		jb_Comfirm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Connection connection = null;
@@ -187,22 +213,34 @@ public class BookBorrow extends JFrame {
 								}
 							else {
 								JOptionPane.showMessageDialog(null, "您已借了5本未还，不能借书");
-								}
+								return;
 							}
+						}  
 						else {
-								JOptionPane.showMessageDialog(null, "该书已借出,借书失败！");
-							}
+							JOptionPane.showMessageDialog(null, "该书已借出,借书失败！");
+							return;
+						}
 					}
-					else {
-						JOptionPane.showMessageDialog(null, "无该用户 借书失败！");
-					}
+				  else {
+					  JOptionPane.showMessageDialog(null, "无该用户 借书失败！");
+					  return;
+				  }
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					JOptionPane.showMessageDialog(null, "借书失败请检查输入信息是否为空或有错！");
 					e1.printStackTrace();
+				}finally {
+					try {
+						connection.close();
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 			}
 		});
+		jb_Comfirm.setFocusPainted(false);
+		jb_Comfirm.setBorderPainted(false);
 		jb_Comfirm.setForeground(new Color(0, 191, 255));
 		jb_Comfirm.setFont(new Font("宋体", Font.PLAIN, 20));
 		jb_Comfirm.setBackground(Color.WHITE);
@@ -223,6 +261,14 @@ public class BookBorrow extends JFrame {
 		contentPane.add(B_no_Txt);
 		
 		JButton jb_Cancel = new JButton("\u53D6\u6D88");
+		jb_Cancel.setIcon(new ImageIcon(BookBorrow.class.getResource("/icon/Reset.png")));
+		jb_Cancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				BookBorrow.this.dispose();
+			}
+		});
+		jb_Cancel.setFocusPainted(false);
+		jb_Cancel.setBorderPainted(false);
 		jb_Cancel.setForeground(new Color(0, 191, 255));
 		jb_Cancel.setFont(new Font("宋体", Font.PLAIN, 20));
 		jb_Cancel.setBackground(Color.WHITE);
@@ -231,10 +277,12 @@ public class BookBorrow extends JFrame {
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(15, 149, 973, 192);
+		scrollPane.getViewport().setBackground(Color.white);
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
 		table.setBorder(new LineBorder(new Color(0, 0, 0)));
+		table.setFont(new Font("宋体", Font.PLAIN, 20));
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -250,7 +298,9 @@ public class BookBorrow extends JFrame {
 				"\u4E66\u53F7", "\u4E66\u540D", "\u51FA\u7248\u793E", "\u4F5C\u8005", "\u4EF7\u683C", "\u662F\u5426\u501F\u51FA"
 			}
 		));
-		table.setRowHeight(25);
+		table.getTableHeader().setFont(new Font("Dialog", 0, 19));
+		table.getTableHeader().setBackground(Color.white);
+		table.setRowHeight(30);
 		table.setBackground(Color.WHITE);
 		scrollPane.setViewportView(table);
 	}
@@ -273,7 +323,6 @@ public class BookBorrow extends JFrame {
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-
 			e.printStackTrace();
 		}finally {
 		try {

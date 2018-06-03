@@ -61,7 +61,8 @@ public class Meun {
 		frame.setBounds(100, 100, 1025, 682);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		frame.setLocation(450, 200);
+		frame.setLocationRelativeTo(null);
+		
 		
 		
 		JLabel lblNewLabel = new JLabel("\u6B22\u8FCE\u4F7F\u7528\u56FE\u4E66\u7BA1\u7406\u7CFB\u7EDF");
@@ -78,6 +79,8 @@ public class Meun {
 				BM.setVisible(true);
 			}
 		});
+		jb_BookManager.setFocusPainted(false);
+		jb_BookManager.setBorderPainted(false);
 		jb_BookManager.setHorizontalAlignment(SwingConstants.LEADING);
 		jb_BookManager.setIcon(new ImageIcon(Meun.class.getResource("/icon/book.png")));
 		jb_BookManager.setBackground(Color.WHITE);
@@ -91,7 +94,8 @@ public class Meun {
 				userManage.setVisible(true);
 			}
 		});
-		
+		jb_UserManager.setFocusPainted(false);
+		jb_UserManager.setBorderPainted(false);
 		jb_UserManager.setIcon(new ImageIcon(Meun.class.getResource("/icon/user-set.png")));
 		jb_UserManager.setHorizontalAlignment(SwingConstants.LEADING);
 		jb_UserManager.setBackground(Color.WHITE);
@@ -105,6 +109,8 @@ public class Meun {
 				BB.setVisible(true);
 			}
 		});
+		jb_Brorrow.setFocusPainted(false);
+		jb_Brorrow.setBorderPainted(false);
 		jb_Brorrow.setIcon(new ImageIcon(Meun.class.getResource("/icon/borrow.png")));
 		jb_Brorrow.setHorizontalAlignment(SwingConstants.LEADING);
 		jb_Brorrow.setBackground(Color.WHITE);
@@ -112,6 +118,14 @@ public class Meun {
 		frame.getContentPane().add(jb_Brorrow);
 		
 		JButton jb_Back = new JButton("\u8FD8    \u4E66");
+		jb_Back.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				BookBack bookBack = new BookBack();
+				bookBack.setVisible(true);
+			}
+		});
+		jb_Back.setFocusPainted(false);
+		jb_Back.setBorderPainted(false);
 		jb_Back.setIcon(new ImageIcon(Meun.class.getResource("/icon/back.png")));
 		jb_Back.setHorizontalAlignment(SwingConstants.LEADING);
 		jb_Back.setBackground(Color.WHITE);
@@ -125,6 +139,8 @@ public class Meun {
 				inquiry.setVisible(true);	
 			}
 		});
+		jb_Search.setFocusPainted(false);
+		jb_Search.setBorderPainted(false);
 		jb_Search.setIcon(new ImageIcon(Meun.class.getResource("/icon/search.png")));
 		jb_Search.setHorizontalAlignment(SwingConstants.LEADING);
 		jb_Search.setBackground(Color.WHITE);
@@ -132,6 +148,7 @@ public class Meun {
 		frame.getContentPane().add(jb_Search);
 		
 		JButton jb_Exit = new JButton("\u9000    \u51FA");
+		jb_Exit.setHorizontalAlignment(SwingConstants.LEFT);
 		jb_Exit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int choice = JOptionPane.showConfirmDialog(null, "确定退出？");
@@ -140,6 +157,8 @@ public class Meun {
 				}
 			}
 		});
+		jb_Exit.setFocusPainted(false);
+		jb_Exit.setBorderPainted(false);
 		jb_Exit.setIcon(new ImageIcon(Meun.class.getResource("/icon/exit.png")));
 		jb_Exit.setBackground(Color.WHITE);
 		jb_Exit.setBounds(589, 416, 199, 50);

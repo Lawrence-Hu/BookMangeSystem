@@ -85,12 +85,14 @@ public class UserManage extends JFrame {
 		setTitle("\u8BFB\u8005\u4FE1\u606F\u4E2D\u5FC3");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1025, 682);
-		setLocation(450, 200);
+	
 		setResizable(false);
 		contentPane = new JPanel();		
+		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		setLocationRelativeTo(null);
 		
 		JLabel lblNewLabel = new JLabel("\u59D3\u540D");
 		lblNewLabel.setBounds(168, 64, 90, 43);
@@ -118,6 +120,8 @@ public class UserManage extends JFrame {
 				
 			}
 		});
+		s_jb_Search.setBorderPainted(false);
+		s_jb_Search.setFocusable(false);
 		s_jb_Search.setBounds(751, 64, 123, 43);
 		s_jb_Search.setForeground(new Color(0, 191, 255));
 		s_jb_Search.setIcon(new ImageIcon(UserManage.class.getResource("/icon/search (2).png")));
@@ -132,6 +136,7 @@ public class UserManage extends JFrame {
 		contentPane.add(label_5);
 		
 		idTxt = new JTextField();
+		idTxt.setBackground(Color.WHITE);
 		idTxt.setText("\u9ED8\u8BA4\u503C");
 		idTxt.setFont(new Font("宋体", Font.BOLD, 18));
 		idTxt.setBounds(126, 345, 172, 35);
@@ -203,6 +208,7 @@ public class UserManage extends JFrame {
 		contentPane.add(label_4);
 		
 		bookNumTxt = new JTextField();
+		bookNumTxt.setBackground(Color.WHITE);
 		bookNumTxt.setEditable(false);
 		bookNumTxt.setForeground(Color.DARK_GRAY);
 		bookNumTxt.setFont(new Font("宋体", Font.BOLD, 18));
@@ -227,7 +233,7 @@ public class UserManage extends JFrame {
 					JOptionPane.showMessageDialog(null, "性别不能为空");
 					return;
 				}else{
-					if(!"男".equals(sex)|| !"女".equals(sex)){
+					if(!(sex.trim().equals("男")||sex.trim().equals("女"))){
 						JOptionPane.showMessageDialog(null, "请输入正确的性别！！");
 						return;
 					}
@@ -289,8 +295,40 @@ public class UserManage extends JFrame {
 				int id = new Integer(idTxt.getText());
 				String name = nameTxt.getText();
 				String sex = genderTxt.getText();
-				int age = new Integer(ageTxt.getText());
+				int age = 0;
 				String job = jobTxt.getText();
+				if(StringUtil.isEmpty(name)){
+					JOptionPane.showMessageDialog(null, "姓名不能为空");
+					return;
+				}
+				if(StringUtil.isEmpty(sex)){
+					JOptionPane.showMessageDialog(null, "性别不能为空");
+					return;
+				}else{
+					if(!(sex.trim().equals("男")||sex.trim().equals("女"))){
+						JOptionPane.showMessageDialog(null, "请输入正确的性别！！");
+						return;
+					}
+				}
+				if(StringUtil.isEmpty(ageTxt.getText())){
+					JOptionPane.showMessageDialog(null, "年龄不能为空");
+					return;
+				}else{
+					try{
+						age = new Integer(ageTxt.getText());
+						if(age > 100){
+							JOptionPane.showMessageDialog(null, "请输入正确的年龄！！");
+							return;
+						}
+					}catch(Exception e2){
+						JOptionPane.showMessageDialog(null, "年龄不能为汉字，请输入数字！！");
+						return;
+					}
+				}
+				if(StringUtil.isEmpty(job)){
+					JOptionPane.showMessageDialog(null, "职业不能为空");
+					return;
+				}
 				User User = new User(id,name,sex,age,job);
 				Connection con = null;
 				try {
@@ -368,14 +406,18 @@ public class UserManage extends JFrame {
 				UserManage.this.resetInfo();
 			}
 		});
+		jb_reset.setBorderPainted(false);
+		jb_reset.setFocusable(false);
 		jb_reset.setBounds(721, 530, 123, 43);
 		jb_reset.setForeground(new Color(0, 191, 255));
 		jb_reset.setIcon(new ImageIcon(UserManage.class.getResource("/icon/Reset.png")));
 		jb_reset.setFont(new Font("宋体", Font.PLAIN, 20));
+		jb_reset.setBackground(Color.white);
 		contentPane.add(jb_reset);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(14, 136, 973, 194);
+		scrollPane.getViewport().setBackground(Color.white);
 		contentPane.add(scrollPane);
 		
 		UserTable = new JTable();
@@ -401,6 +443,8 @@ public class UserManage extends JFrame {
 				return columnEditables[column];
 			}
 		});
+		UserTable.getTableHeader().setFont(new Font("Dialog", 0, 19));
+		UserTable.getTableHeader().setBackground(Color.white);
 		UserTable.getColumnModel().getColumn(5).setPreferredWidth(100);
 		UserTable.setRowHeight(30);
 		UserTable.setFont(new Font("宋体", Font.PLAIN, 20));

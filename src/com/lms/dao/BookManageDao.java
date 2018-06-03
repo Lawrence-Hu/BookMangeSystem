@@ -35,14 +35,13 @@ public class BookManageDao {
 		return prmt.executeUpdate();
 	}
 	public int Update(Connection conn, Book book) throws SQLException {
-		String sql = "update book set bname  = ?, publish = ?, author = ?, price = ?,ishere=? where bno = ?";
+		String sql = "update book set bname  = ?, publish = ?, author = ?, price = ? where bno = ?";
 		PreparedStatement prmt = conn.prepareStatement(sql);
 		prmt.setString(1, book.getBname());
 		prmt.setString(2,book.getPublish());
 		prmt.setString(3, book.getAuthor());
 		prmt.setFloat(4, book.getPrice());
-		prmt.setString(5, book.getYesorNot());
-		prmt.setInt(6, book.getBno());
+		prmt.setInt(5, book.getBno());
 		return prmt.executeUpdate();
 	}
 	

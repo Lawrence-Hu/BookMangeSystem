@@ -23,6 +23,7 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import javax.swing.JDesktopPane;
 import java.awt.event.ActionListener;
+import java.beans.PropertyVetoException;
 import java.awt.event.ActionEvent;
 
 public class Inquiry extends JFrame {
@@ -55,7 +56,8 @@ public class Inquiry extends JFrame {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Inquiry.class.getResource("/icon/search.png")));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1025, 682);
-		
+		setLocation(450, 200);
+		setLocationRelativeTo(null);
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
@@ -66,7 +68,7 @@ public class Inquiry extends JFrame {
 		menuBar.add(menu);
 		
 		JDesktopPane desktopPane = new JDesktopPane();
-		desktopPane.setBounds(0, 0, 1003, 596);
+		desktopPane.setBounds(0, 0, 1019, 612);
 		
 		
 		JMenuItem Ia = new JMenuItem("\u67E5\u8BE2\u8D85\u671F\u9650\u7684\u501F\u4E66\u8BB0\u5F55");
