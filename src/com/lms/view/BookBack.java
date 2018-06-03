@@ -1,8 +1,11 @@
 package com.lms.view;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,6 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import com.lms.dao.BookManageDao;
@@ -64,6 +68,7 @@ public class BookBack extends JFrame {
 		setLocation(450, 200);
 		setResizable(false);
 		contentPane = new JPanel();
+		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -82,6 +87,7 @@ public class BookBack extends JFrame {
 		contentPane.add(s_bookIdTxt);
 		
 		JButton s_jbSearch = new JButton("\u641C\u7D22");
+		s_jbSearch.setBackground(Color.WHITE);
 		s_jbSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(StringUtil.isEmpty(s_bookIdTxt.getText())){
@@ -120,6 +126,8 @@ public class BookBack extends JFrame {
 				
 			}
 		});
+		s_jbSearch.setBorderPainted(false);
+		s_jbSearch.setFocusPainted(false);
 		s_jbSearch.setIcon(new ImageIcon(BookBack.class.getResource("/icon/search (2).png")));
 		s_jbSearch.setForeground(new Color(0, 191, 255));
 		s_jbSearch.setFont(new Font("宋体", Font.PLAIN, 20));
@@ -134,6 +142,7 @@ public class BookBack extends JFrame {
 		contentPane.add(label_1);
 		
 		bookIdTxt = new JTextField();
+		bookIdTxt.setBackground(Color.WHITE);
 		bookIdTxt.setFont(new Font("宋体", Font.BOLD, 18));
 		bookIdTxt.setEditable(false);
 		bookIdTxt.setColumns(10);
@@ -148,6 +157,7 @@ public class BookBack extends JFrame {
 		contentPane.add(label_2);
 		
 		bookNameTxt = new JTextField();
+		bookNameTxt.setBackground(Color.WHITE);
 		bookNameTxt.setFont(new Font("宋体", Font.BOLD, 18));
 		bookNameTxt.setEditable(false);
 		bookNameTxt.setColumns(10);
@@ -162,6 +172,7 @@ public class BookBack extends JFrame {
 		contentPane.add(label_3);
 		
 		publishTxt = new JTextField();
+		publishTxt.setBackground(Color.WHITE);
 		publishTxt.setFont(new Font("宋体", Font.BOLD, 18));
 		publishTxt.setEditable(false);
 		publishTxt.setColumns(10);
@@ -176,6 +187,7 @@ public class BookBack extends JFrame {
 		contentPane.add(label_4);
 		
 		readerIdTxt = new JTextField();
+		readerIdTxt.setBackground(Color.WHITE);
 		readerIdTxt.setEditable(false);
 		readerIdTxt.setFont(new Font("宋体", Font.BOLD, 18));
 		readerIdTxt.setEnabled(false);
@@ -191,6 +203,7 @@ public class BookBack extends JFrame {
 		contentPane.add(label_5);
 		
 		readerNameTxt = new JTextField();
+		readerNameTxt.setBackground(Color.WHITE);
 		readerNameTxt.setFont(new Font("宋体", Font.BOLD, 18));
 		readerNameTxt.setEditable(false);
 		readerNameTxt.setColumns(10);
@@ -205,6 +218,7 @@ public class BookBack extends JFrame {
 		contentPane.add(label_6);
 		
 		borrowTimeTxt = new JTextField();
+		borrowTimeTxt.setBackground(Color.WHITE);
 		borrowTimeTxt.setFont(new Font("宋体", Font.BOLD, 18));
 		borrowTimeTxt.setEditable(false);
 		borrowTimeTxt.setColumns(10);
@@ -212,8 +226,13 @@ public class BookBack extends JFrame {
 		contentPane.add(borrowTimeTxt);
 		
 		JButton jb_backBook = new JButton("\u786E\u8BA4\u8FD8\u4E66");
+		jb_backBook.setBackground(Color.WHITE);
 		jb_backBook.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(StringUtil.isEmpty(bookIdTxt.getText())){
+					JOptionPane.showMessageDialog(null, "还书信息不能为空，还书失败！");
+					return;
+				}
 				int choice = JOptionPane.showConfirmDialog(null,"确定还书？");
 				if(choice !=0){
 					return;
@@ -225,6 +244,7 @@ public class BookBack extends JFrame {
 					Boolean rs = bookManageDao.backBook(con, book);
 					if(!rs){
 						JOptionPane.showMessageDialog(null,"还书操作成功！");
+						resetData();
 					}else{
 						JOptionPane.showMessageDialog(null,"还书操作失败!");
 					}
@@ -243,6 +263,8 @@ public class BookBack extends JFrame {
 				
 			}
 		});
+		jb_backBook.setBorderPainted(false);
+		jb_backBook.setFocusPainted(false);
 		jb_backBook.setIcon(new ImageIcon(BookBack.class.getResource("/icon/trues-active.png")));
 		jb_backBook.setForeground(new Color(0, 191, 255));
 		jb_backBook.setFont(new Font("宋体", Font.PLAIN, 20));
@@ -250,11 +272,14 @@ public class BookBack extends JFrame {
 		contentPane.add(jb_backBook);
 		
 		JButton jb_return = new JButton("\u8FD4\u56DE\u4E0A\u7EA7");
+		jb_return.setBackground(Color.WHITE);
 		jb_return.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				BookBack.this.dispose();
 			}
 		});
+		jb_return.setBorderPainted(false);
+		jb_return.setFocusPainted(false);
 		jb_return.setIcon(new ImageIcon(BookBack.class.getResource("/icon/Reset.png")));
 		jb_return.setForeground(new Color(0, 191, 255));
 		jb_return.setFont(new Font("宋体", Font.PLAIN, 20));
@@ -269,6 +294,7 @@ public class BookBack extends JFrame {
 		contentPane.add(label_7);
 		
 		moneyTxt = new JTextField();
+		moneyTxt.setBackground(Color.WHITE);
 		moneyTxt.setEditable(false);
 		moneyTxt.setForeground(Color.RED);
 		moneyTxt.setFont(new Font("宋体", Font.BOLD, 18));
@@ -281,5 +307,20 @@ public class BookBack extends JFrame {
 		lblNewLabel.setForeground(Color.RED);
 		lblNewLabel.setBounds(398, 462, 72, 18);
 		contentPane.add(lblNewLabel);
+	}
+	
+	/**
+	 * 重置数据
+	 */
+	public void resetData(){
+		bookIdTxt.setText("");
+		moneyTxt.setText("");
+		readerIdTxt.setText("");
+		bookNameTxt.setText("");
+		readerNameTxt.setText("");
+		borrowTimeTxt.setText("");
+		publishTxt.setText("");
+		s_bookIdTxt.setText("");
+		
 	}
 }

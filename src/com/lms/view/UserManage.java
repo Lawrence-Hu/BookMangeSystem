@@ -110,6 +110,7 @@ public class UserManage extends JFrame {
 		s_nameTxt.setColumns(10);
 		
 		JButton s_jb_Search = new JButton("\u641C\u7D22");
+		s_jb_Search.setBackground(Color.WHITE);
 		s_jb_Search.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -217,6 +218,7 @@ public class UserManage extends JFrame {
 		contentPane.add(bookNumTxt);
 		
 		jb_add = new JButton("\u589E\u52A0");
+		jb_add.setBackground(Color.WHITE);
 		jb_add.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String name = nameTxt.getText();
@@ -244,7 +246,7 @@ public class UserManage extends JFrame {
 				}else{
 					try{
 						age = new Integer(ageTxt.getText());
-						if(age > 100){
+						if(age > 100 || age < 5){
 							JOptionPane.showMessageDialog(null, "请输入正确的年龄！！");
 							return;
 						}
@@ -283,6 +285,7 @@ public class UserManage extends JFrame {
 				}
 			}
 		});
+		jb_add.setBorderPainted(false);
 		jb_add.setBounds(135, 530, 123, 43);
 		jb_add.setForeground(new Color(0, 191, 255));
 		jb_add.setIcon(new ImageIcon(UserManage.class.getResource("/icon/add.png")));
@@ -290,8 +293,13 @@ public class UserManage extends JFrame {
 		contentPane.add(jb_add);
 		
 		jb_modify = new JButton("\u4FEE\u6539");
+		jb_modify.setBackground(Color.WHITE);
 		jb_modify.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(idTxt.getText().equals("默认值")){
+					JOptionPane.showMessageDialog(null, "请输入读者信息");
+					return;
+				}
 				int id = new Integer(idTxt.getText());
 				String name = nameTxt.getText();
 				String sex = genderTxt.getText();
@@ -316,7 +324,7 @@ public class UserManage extends JFrame {
 				}else{
 					try{
 						age = new Integer(ageTxt.getText());
-						if(age > 100){
+						if(age > 100 || age < 5){
 							JOptionPane.showMessageDialog(null, "请输入正确的年龄！！");
 							return;
 						}
@@ -355,6 +363,7 @@ public class UserManage extends JFrame {
 				}
 			}
 		});
+		jb_modify.setBorderPainted(false);
 		jb_modify.setBounds(317, 530, 123, 43);
 		jb_modify.setForeground(new Color(0, 191, 255));
 		jb_modify.setIcon(new ImageIcon(UserManage.class.getResource("/icon/allfix.png")));
@@ -362,8 +371,13 @@ public class UserManage extends JFrame {
 		contentPane.add(jb_modify);
 		
 		jb_delete = new JButton("\u5220\u9664");
+		jb_delete.setBackground(Color.WHITE);
 		jb_delete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(idTxt.getText().equals("默认值")){
+					JOptionPane.showMessageDialog(null, "请选择要删除的学者信息");
+					return;
+				}
 				if(new Integer(bookNumTxt.getText()) != 0){
 					JOptionPane.showMessageDialog(null, "该读者还有图书为归还，不能删除！！");
 					return;
@@ -394,6 +408,8 @@ public class UserManage extends JFrame {
 				}
 			}
 		});
+		jb_delete.setBorderPainted(false);
+		jb_delete.setFocusPainted(false);
 		jb_delete.setBounds(516, 530, 123, 43);
 		jb_delete.setForeground(new Color(0, 191, 255));
 		jb_delete.setIcon(new ImageIcon(UserManage.class.getResource("/icon/del.png")));
@@ -412,7 +428,7 @@ public class UserManage extends JFrame {
 		jb_reset.setForeground(new Color(0, 191, 255));
 		jb_reset.setIcon(new ImageIcon(UserManage.class.getResource("/icon/Reset.png")));
 		jb_reset.setFont(new Font("宋体", Font.PLAIN, 20));
-		jb_reset.setBackground(Color.white);
+		jb_reset.setBackground(Color.WHITE);
 		contentPane.add(jb_reset);
 		
 		JScrollPane scrollPane = new JScrollPane();
