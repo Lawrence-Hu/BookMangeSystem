@@ -92,7 +92,12 @@ public class BookManageDao {
 			data[3] = rs.getString("id");//读者编号
 			data[4] = rs.getString("name");//读者名称
 			data[5] = rs.getString("bdate");//借书时间
-			data[6] = rs.getString("fun");//罚款
+			if(new Integer(rs.getString("fun")) < 0){
+				data[6] = "0";
+			}else{
+				
+				data[6] = rs.getString("fun");//罚款
+			}
 			
 		}
 		return data;
