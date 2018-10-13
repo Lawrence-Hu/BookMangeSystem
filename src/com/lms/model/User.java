@@ -89,7 +89,7 @@ public class User {
 	public void setborrowBookNumber(int borrowBookNumber) {
 		this.borrowBookNumber = borrowBookNumber;
 	}
-
+	//≤‚ ‘2
 	@Override
 	public String toString() {
 		return "User [name=" + name + ", sex=" + sex + ", id=" + id + ", age=" + age + ", professional=" + professional
